@@ -23,4 +23,6 @@ Route::apiResource('tasks', TaskController::class)->only([
     'index',
     'show',
     'store',
+    'update',
+    "destroy",
 ]);

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class ProjectController extends Controller
 {
     public function index(Request $request){
-        return new ProjectCollection(Project::all());
+        return new ProjectCollection(Auth::user()->projects()->paginate());
     }
     public function store(StoreProjectRequest $request)
     {

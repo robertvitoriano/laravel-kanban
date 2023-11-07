@@ -44,8 +44,4 @@ class AuthController extends Controller
         ], 201);
     }
     
-    public function destroy(Request $request, User $user){
-        $user->delete();
-        return response()->noContent();
-    }
 }

@@ -43,4 +43,9 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ], 201);
     }
+    
+    public function destroy(Request $request, User $user){
+        $user->delete();
+        return response()->noContent();
+    }
 }

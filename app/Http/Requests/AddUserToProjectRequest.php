@@ -12,7 +12,7 @@ class AddUserToProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::user()->level === 'admin';
     }
 
     /**
@@ -23,8 +23,8 @@ class AddUserToProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_id' => 'required',
-            'user_id' => 'required',
+            'project_id' => 'required|exists:projects,id',
+            'user_id' => 'required|exists:users,id',
         ];
     }
 }

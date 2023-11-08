@@ -28,7 +28,7 @@ class TaskPolicy
         }
         if($task->project && $user->memberships->contains($task->project))
         {
-            return false;
+            return true;
         }
         return false;
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
@@ -18,12 +19,13 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('login',[UserController::class, 'login']);
 Route::post('register',[UserController::class, 'register']);
-Route::middleware('User:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('User:sanctum')->group(function(){
+Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('tasks', TaskController::class);   
     Route::apiResource('projects', ProjectController::class);
+    Route::post('members',[MemberController::class, 'store']);
 });
 

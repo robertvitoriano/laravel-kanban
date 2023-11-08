@@ -27,9 +27,7 @@ class UpdateTaskRequest extends FormRequest
             'title' => 'sometimes|required|max:255',
             'is_done' => 'sometimes|boolean',
             'project_id' => ['sometimes',
-               Rule::exists('projects','id')->where(function($query){
-                $query->where('creator_id', Auth::id());
-               }) 
+                Rule::in(Auth::user()->memberships->pluck('id')),
             ]
         ];
     }

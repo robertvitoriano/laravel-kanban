@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class Project extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'title'
     ];
@@ -25,13 +25,19 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
-    
+
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class, Member::class);
     }
-    
-    protected static function booted(): void 
+
+    public function projectList() : BelongsTo
+
+    {
+        return $this->belongsTo(ProjectList::class);
+    }
+
+    protected static function booted(): void
     {
         static::addGlobalScope('member', function(Builder $builder){
            $builder->whereRelation('members', 'user_id', Auth::id());

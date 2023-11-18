@@ -1,7 +1,8 @@
-currently the this crud allows user who are admin to create projects and
+currently this crud allows user who are admin to create projects and
 create regular users and attach them to projects.
 
 future features are:
+
 [] A user that is an admin can create and delete ProjectLists
 [] A project can be attached to one and only one ProjectList
 [] A ProjectList can have several projects attached to it

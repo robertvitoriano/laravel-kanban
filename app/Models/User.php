@@ -44,19 +44,30 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    
+
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class, 'creator_id');
     }
-    
+
     public function memberships(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, Member::class);
     }
-    
+
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class, 'creator_id');
     }
+
+    public function projectLists(): HasMany
+    {
+        return $this->hasMany(ProjectList::class);
+    }
+
+    public function boards():BelongsToMany
+    {
+        return $this->belongsToMany(Board::class, Member::class);
+    }
+
 }

@@ -11,13 +11,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Board extends Model
 {
     use HasFactory;
-
+    protected $fillable = [
+        'title'
+    ];
     public function ProjectLists ():HasMany
     {
         return $this->hasMany(ProjectList::class);
     }
 
-    public function BoardMembers(): BelongsToMany
+    public function creator():BelongsTo
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    public function boardMembers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, BoardMember::class);
     }

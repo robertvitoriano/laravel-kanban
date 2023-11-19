@@ -18,8 +18,8 @@ class BoardResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "created_at" => $this->created_at,
+            "project_lists" => ProjectListResource::collection($this->whenLoaded('projectLists')),
             "members" => UserResource::collection($this->whenLoaded('boardMembers')),
-            "project_lists" => ProjectListResource::collection($this->whenLoaded('projectLists'))
         ];
     }
 }

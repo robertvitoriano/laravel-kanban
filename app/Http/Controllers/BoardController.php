@@ -37,7 +37,7 @@ class BoardController extends Controller
 
     public function show(Request $request, Board $board)
     {
-        $board = $board->load('boardMembers', 'projectLists.projects');
+        $board = $board->load('boardMembers', 'projectLists.projects', 'projectLists.projects.tasks', 'projectLists.projects.members');
 
         return (new BoardResource($board));
     }

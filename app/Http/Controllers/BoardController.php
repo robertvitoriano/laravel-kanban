@@ -34,4 +34,11 @@ class BoardController extends Controller
         $user->boardMemberships()->attach([$board_id]);
         return response()->json(['message' => 'board membership created'], 201);
     }
+
+    public function show(Request $request, Board $board)
+    {
+        return (new BoardResource($board))
+            ->load('boardMembers')
+            ->load('projectLists');
+    }
 }

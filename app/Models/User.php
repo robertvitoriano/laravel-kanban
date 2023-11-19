@@ -62,7 +62,7 @@ class User extends Authenticatable
 
     public function projectLists(): HasMany
     {
-        return $this->hasMany(ProjectList::class);
+        return $this->hasMany(ProjectList::class, 'creator_id');
     }
 
     public function boards(): HasMany

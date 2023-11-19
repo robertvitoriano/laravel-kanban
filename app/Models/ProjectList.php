@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ProjectList extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'title',
+        'board_id',
+    ];
 
     public function projects(): HasMany
     {

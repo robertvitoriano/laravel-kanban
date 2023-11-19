@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProjectListController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
@@ -27,8 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('tasks', TaskController::class);
     Route::apiResource('projects', ProjectController::class);
-    Route::post('members',[MemberController::class, 'store']);
     Route::apiResource('boards', BoardController::class);
     Route::post('/boards/create-membership', [BoardController::class, 'createBoardMembership']);
+    Route::post('members',[MemberController::class, 'store']);
+    Route::post('project-lists',[ProjectListController::class, 'store']);
 });
 

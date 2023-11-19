@@ -29,5 +29,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('projects', ProjectController::class);
     Route::post('members',[MemberController::class, 'store']);
     Route::apiResource('boards', BoardController::class);
+    Route::post('/boards/create-membership', [BoardController::class, 'createBoardMembership']);
 });
 

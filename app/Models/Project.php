@@ -15,7 +15,9 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title'
+        'title',
+        'project_list_id',
+        'creator_id'
     ];
     public function creator(): BelongsTo
     {
@@ -34,7 +36,7 @@ class Project extends Model
     public function projectList() : BelongsTo
 
     {
-        return $this->belongsTo(ProjectList::class);
+        return $this->belongsTo(ProjectList::class, 'project_list_id');
     }
 
     protected static function booted(): void

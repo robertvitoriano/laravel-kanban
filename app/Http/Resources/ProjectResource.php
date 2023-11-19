@@ -20,7 +20,8 @@ class ProjectResource extends JsonResource
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'members' => UserResource::collection($this->whenLoaded('members')),
             'created_at' =>$this->created_at,
-            
+            'project_list_id' => $this->project_list_id,
+
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\StoreBoardRequest;
 use App\Http\Resources\BoardCollection;
 use App\Http\Resources\BoardResource;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,7 @@ use App\Http\Requests\CreateBoardMembershipRequest;
 use App\Models\User;
 class BoardController extends Controller
 {
-    public function store(StoreProjectRequest $request)
+    public function store(StoreBoardRequest $request)
     {
         $validated = $request->validated();
         $board = Auth::user()->boards()->create($validated);
@@ -37,8 +37,8 @@ class BoardController extends Controller
 
     public function show(Request $request, Board $board)
     {
-        return (new BoardResource($board))
-            ->load('boardMembers')
-            ->load('projectLists');
+        $board = $board->load('boardMembers', 'projectLists.projects');
+
+        return (new BoardResource($board));
     }
 }

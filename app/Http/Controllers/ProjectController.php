@@ -18,11 +18,11 @@ class ProjectController extends Controller
         $this->authorizeResource(Project::class,'project');
     }
     public function index(Request $request){
-        
+
         $projects = QueryBuilder::for(Project::class)
             ->allowedIncludes('tasks')
             ->paginate();
-            
+
         return new ProjectCollection($projects);
     }
     public function store(StoreProjectRequest $request)
@@ -31,21 +31,21 @@ class ProjectController extends Controller
         $project = Auth::user()->projects()->create($validated);
         return new ProjectResource($project);
     }
-    
+
     public function show (Request $request, Project $project)
     {
         return (new ProjectResource($project))
             ->load('tasks')
             ->load('members');
     }
-    
+
     public function update(UpdateProjectRequest $request, Project $project)
     {
         $validated = $request->validated();
         $project->update($validated);
         return new ProjectResource($project);
     }
-    
+
     public function destroy(Request $request, Project $project)
     {
         $project->delete();

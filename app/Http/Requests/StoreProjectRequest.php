@@ -23,7 +23,8 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => ["required","max:255"]
+            "title" => ["required","max:255"],
+            "project_list_id" => 'required|max:255|exists:project_lists,id'
         ];
     }
 }

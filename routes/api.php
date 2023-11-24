@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('boards', BoardController::class);
     Route::post('/boards/create-membership', [BoardController::class, 'createBoardMembership']);
-    Route::post('members',[MemberController::class, 'store']);
+    Route::post('/projects/members',[MemberController::class, 'store']);
     Route::post('project-lists',[ProjectListController::class, 'store']);
 });
 

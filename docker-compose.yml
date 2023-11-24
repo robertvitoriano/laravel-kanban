@@ -12,5 +12,20 @@ services:
       - $DB_PORT:$DB_PORT
     volumes:
       - db:/var/lib/mysqldata
-volumes: 
+
+  mysqldb_testing:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_DATABASE=testing
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=123
+    ports:
+      - "3307:3306"  # Use a different port for the second database
+    volumes:
+      - db_testing:/var/lib/mysqldata
+
+volumes:
   db:
+  db_testing:

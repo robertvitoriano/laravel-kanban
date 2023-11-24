@@ -18,8 +18,6 @@ class AddBoardMemberTest extends TestCase
         $user = User::factory()->create(['level' => 'admin']);
         $this->actingAs($user);
         $board = Board::factory()->create();
-
-        Log::debug($board);
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',

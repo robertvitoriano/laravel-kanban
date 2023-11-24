@@ -24,7 +24,7 @@ class AddBoardMemberTest extends TestCase
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ])
-        ->postJson('http://127.0.0.1:8000/api/boards/create-membership', [
+        ->postJson('/api/boards/create-membership', [
             'user_id' => $user->id,
             'board_id' => $board->id,
         ]);

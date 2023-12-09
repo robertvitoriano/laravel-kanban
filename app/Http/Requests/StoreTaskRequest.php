@@ -25,10 +25,11 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             "title" => "required","max:255",
+            "description" => "required","max:65000",
             'project_id' => [
                 'nullable',
                 Rule::in(Auth::user()->memberships->pluck('id')),
-                
+
             ]
         ];
     }

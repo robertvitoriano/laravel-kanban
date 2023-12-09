@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\Auth;
 class Task extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'title',
         'is_done',
         'creator_id',
         'project_id',
+        'description',
     ];
     protected $casts = [
         'is_done' => 'boolean'
@@ -26,13 +27,13 @@ class Task extends Model
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
-    
+
     public function project():BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
-    
-protected static function booted(): void 
+
+protected static function booted(): void
     {
         static::addGlobalScope('member', function(Builder $builder){
            $builder->where('creator_id', Auth::id())

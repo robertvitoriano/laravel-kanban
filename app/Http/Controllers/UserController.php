@@ -13,21 +13,22 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        
+
         if(!Auth::attempt($validated)){
             return response()->json([
                 'message' => 'Login information invalid'
             ], 401);
         }
-        
+
         $user = User::where('email', $validated['email'])->first();
-        
+
         return response()->json([
             'access_token' => $user->createToken('api_token')->plainTextToken,
             'token_type' => 'Bearer',
+            'level' =>  $user->level,
         ]);
     }
-    
+
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -35,7 +36,7 @@ class UserController extends Controller
             'email' => 'required|max:255|unique:users,email',
             'password' => 'required|confirmed| min:6'
         ]);
-        
+
         $user = User::create($validated);
         return response()->json([
             'data' => $user,
@@ -43,5 +44,5 @@ class UserController extends Controller
             'token_type' => 'Bearer',
         ], 201);
     }
-    
+
 }

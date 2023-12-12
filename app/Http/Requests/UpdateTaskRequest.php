@@ -25,6 +25,7 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'title' => 'sometimes|required|max:255',
+            'description' => 'sometimes|required|max:65000',
             'is_done' => 'sometimes|boolean',
             'project_id' => ['sometimes',
                 Rule::in(Auth::user()->memberships->pluck('id')),

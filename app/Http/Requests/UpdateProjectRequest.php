@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class UpdateProjectRequest extends FormRequest
 {
     /**
@@ -22,7 +23,8 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => ["sometimes","required","max:255"]
+            "title" => ["sometimes", "required", "max:255"],
+            "project_list_id" => 'sometimes|exists:project_lists,id',
         ];
     }
 }

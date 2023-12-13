@@ -14,7 +14,9 @@ class Board extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'title'
+        'title',
+        'description',
+        'cover'
     ];
     public function projectLists ():HasMany
     {

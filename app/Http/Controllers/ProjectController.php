@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectCollection;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Models\ProjectList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -15,9 +16,10 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Project::class,'project');
+        $this->authorizeResource(Project::class, 'project');
     }
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         $projects = QueryBuilder::for(Project::class)
             ->allowedIncludes('tasks')
@@ -28,11 +30,18 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $validated = $request->validated();
-        $project = Auth::user()->projects()->create($validated);
+
+        $projectList = ProjectList::find($validated['project_list_id']);
+        $projectsCount = $projectList->projects()->count();
+        $project = Auth::user()->projects()->create([
+            'title' => $validated['title'],
+            'project_list_id' => $validated['project_list_id'],
+            'order' => $projectsCount + 1,
+        ]);
         return new ProjectResource($project);
     }
 
-    public function show (Request $request, Project $project)
+    public function show(Request $request, Project $project)
     {
         return (new ProjectResource($project))
             ->load('tasks')

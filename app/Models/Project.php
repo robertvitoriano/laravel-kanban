@@ -17,7 +17,8 @@ class Project extends Model
     protected $fillable = [
         'title',
         'project_list_id',
-        'creator_id'
+        'creator_id',
+        'order',
     ];
     public function creator(): BelongsTo
     {

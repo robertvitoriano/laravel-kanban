@@ -6,6 +6,8 @@ use App\Http\Resources\ProjectListResource;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProjectListRequest;
 use illuminate\Support\Facades\Auth;
+use App\Models\ProjectList;
+
 class ProjectListController extends Controller
 {
     public function store(StoreProjectListRequest $request)
@@ -13,5 +15,10 @@ class ProjectListController extends Controller
         $validated = $request->validated();
         $projectList = Auth::user()->projectLists()->create($validated);
         return new ProjectListResource($projectList);
+    }
+    public function destroy(Request $request, ProjectList $projectList)
+    {
+        $projectList->delete();
+        return response()->noContent();
     }
 }

@@ -17,6 +17,8 @@ class BoardResource extends JsonResource
         return [
             "id" => $this->id,
             "title" => $this->title,
+            "description" => $this->description,
+            "cover" => $this->cover,
             "created_at" => $this->created_at,
             "project_lists" => ProjectListResource::collection($this->whenLoaded('projectLists')),
             "members" => UserResource::collection($this->whenLoaded('boardMembers')),

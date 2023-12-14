@@ -25,6 +25,7 @@ class UpdateProjectRequest extends FormRequest
         return [
             "title" => ["sometimes", "required", "max:255"],
             "project_list_id" => 'sometimes|exists:project_lists,id',
+            "order" =>'sometimes'
         ];
     }
 }

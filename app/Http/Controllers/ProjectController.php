@@ -57,6 +57,15 @@ class ProjectController extends Controller
 
     public function destroy(Request $request, Project $project)
     {
+        $projectsToUpdateOrder = Project::where('project_list_id', $project->projectList->id)
+            ->where('order', '>', $project->order)
+            ->orderBy('order', 'asc')
+            ->get();
+
+        foreach ($projectsToUpdateOrder as $projectToUpdate) {
+            $projectToUpdate->order = $projectToUpdate->order - 1;
+            $projectToUpdate->save();
+        }
         $project->delete();
         return response()->noContent();
     }

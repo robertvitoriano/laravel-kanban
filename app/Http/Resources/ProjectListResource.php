@@ -19,7 +19,7 @@ class ProjectListResource extends JsonResource
             "creator_id" => $this->creator_id,
             "title" => $this->title,
             "board_id" => $this->board_id,
-            "projects" => ProjectResource::collection($this->whenLoaded('projects'))
+            "projects" => ProjectResource::collection($this->whenLoaded('projects')->sortBy('order'))
         ];
     }
 }

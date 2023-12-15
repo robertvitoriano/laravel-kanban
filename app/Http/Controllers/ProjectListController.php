@@ -13,8 +13,10 @@ class ProjectListController extends Controller
     public function store(StoreProjectListRequest $request)
     {
         $validated = $request->validated();
-        $projectList = Auth::user()->projectLists()->create($validated);
-        return new ProjectListResource($projectList);
+        Auth::user()->projectLists()->create($validated);
+        return response()->json([
+            'message' => 'list successfully created',
+        ], 201);
     }
     public function destroy(Request $request, ProjectList $projectList)
     {

@@ -29,14 +29,15 @@ class ProjectController extends Controller
     }
     public function store(StoreProjectRequest $request)
     {
+        $LARGE_GAP = 6000;
         $validated = $request->validated();
 
         $projectList = ProjectList::find($validated['project_list_id']);
-        $projectsCount = $projectList->projects()->count();
+        $lastProject = $projectList->projects()->orderBy('order')->latest()->first();
         $project = Auth::user()->projects()->create([
             'title' => $validated['title'],
             'project_list_id' => $validated['project_list_id'],
-            'order' => $projectsCount + 1,
+            'order' => $lastProject ? $lastProject->order + $LARGE_GAP : $LARGE_GAP,
         ]);
         return new ProjectResource($project);
     }

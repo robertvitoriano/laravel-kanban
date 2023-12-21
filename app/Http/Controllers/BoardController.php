@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Board;
 use App\Http\Requests\CreateBoardMembershipRequest;
 use App\Models\User;
+
 class BoardController extends Controller
 {
     public function store(StoreBoardRequest $request)
@@ -37,7 +38,11 @@ class BoardController extends Controller
 
     public function show(Request $request, Board $board)
     {
-        $board = $board->load('boardMembers', 'projectLists.projects', 'projectLists.projects.tasks', 'projectLists.projects.members');
+        $board = $board->load([
+            'boardMembers',
+            'projectLists.projects' => fn($query) => $query->orderBy('order'),
+            'projectLists.projects.tasks',
+            'projectLists.projects.members']);
 
         return (new BoardResource($board));
     }

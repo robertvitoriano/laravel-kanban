@@ -19,6 +19,7 @@ class Project extends Model
         'project_list_id',
         'creator_id',
         'order',
+        'description'
     ];
     public function creator(): BelongsTo
     {

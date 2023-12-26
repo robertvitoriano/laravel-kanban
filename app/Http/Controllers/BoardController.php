@@ -40,7 +40,7 @@ class BoardController extends Controller
     {
         $board = $board->load([
             'boardMembers',
-            'projectLists' => fn($query) => $query->limit(3),
+            'projectLists',
             'projectLists.projects' => fn($query) => $query->orderBy('order'),
             'projectLists.projects.tasks',
             'projectLists.projects.members']);

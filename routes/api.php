@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('tasks', TaskController::class);
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('boards', BoardController::class);
-    Route::get('/project-lists/board/{boardId}', [ProjectListController::class, 'getProjectListsByBoard']);
+    Route::get('/project-lists/board/{board_id}', [ProjectListController::class, 'getProjectListsByBoard']);
     Route::apiResource('project-lists',ProjectListController::class);
 
     Route::post('/boards/create-membership', [BoardController::class, 'createBoardMembership']);

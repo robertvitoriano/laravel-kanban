@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProjectListCollection;
-use App\Http\Resources\ProjectListResource;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProjectListRequest;
 use illuminate\Support\Facades\Auth;
@@ -24,14 +24,18 @@ class ProjectListController extends Controller
         $projectList->delete();
         return response()->noContent();
     }
+    public function getProjectListsByBoard(Request $request)
+    {
+        // Enable query logging
+        DB::enableQueryLog();
 
-    public function getProjectListsByBoard(Request $request){
+        $boardId = $request->route('board_id');
+        $projectLists = ProjectList::where('board_id', $boardId)->paginate(4);
 
-      $boardId = $request->input('board_id');
-      $projectLists = ProjectList::where('board_id', $boardId)->paginate(4);
+        // Log the last executed query
+        $lastQuery = DB::getQueryLog();
+        info('Last Query: ' . last($lastQuery)['query']);
 
-      return new ProjectListCollection($projectLists);
-
-
+        return new ProjectListCollection($projectLists);
     }
 }

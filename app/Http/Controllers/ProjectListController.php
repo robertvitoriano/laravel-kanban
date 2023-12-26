@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectListCollection;
 use App\Http\Resources\ProjectListResource;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProjectListRequest;
@@ -22,5 +23,15 @@ class ProjectListController extends Controller
     {
         $projectList->delete();
         return response()->noContent();
+    }
+
+    public function getProjectListsByBoard(Request $request){
+
+      $boardId = $request->input('board_id');
+      $projectLists = ProjectList::where('board_id', $boardId)->paginate(4);
+
+      return new ProjectListCollection($projectLists);
+
+
     }
 }

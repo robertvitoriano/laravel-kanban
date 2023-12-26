@@ -22,6 +22,7 @@ class BoardResource extends JsonResource
             "created_at" => $this->created_at,
             "project_lists" => ProjectListResource::collection($this->whenLoaded('projectLists')),
             "members" => UserResource::collection($this->whenLoaded('boardMembers')),
+            "totalProjectListsCount" => $this->totalProjectListsCount,
         ];
     }
 }

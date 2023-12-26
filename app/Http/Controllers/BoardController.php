@@ -40,9 +40,13 @@ class BoardController extends Controller
     {
         $board = $board->load([
             'boardMembers',
+            'projectLists' => fn($query) => $query->limit(3),
             'projectLists.projects' => fn($query) => $query->orderBy('order'),
             'projectLists.projects.tasks',
             'projectLists.projects.members']);
+
+        $totalProjectListsCount = $board->projectLists()->count();
+        $board->totalProjectListsCount = $totalProjectListsCount;
 
         return (new BoardResource($board));
     }

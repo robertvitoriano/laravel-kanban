@@ -48,6 +48,7 @@ class UserController extends Controller
         if ($request->hasFile('avatar')) {
             $folder = 'avatars/' . $validated['name'];
             $avatarPath = $request->file('avatar')->store($folder, 's3');
+            Storage::disk('s3')->setVisibility($avatarPath, 'public');
             $validated['avatar'] = Storage::disk('s3')->url($avatarPath);
         }
 

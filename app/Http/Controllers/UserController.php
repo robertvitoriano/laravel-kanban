@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 class UserController extends Controller
 {
     public function login(Request $request)
@@ -37,11 +39,17 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:users,name',
             'email' => 'required|max:255|unique:users,email',
             'password' => 'required|confirmed| min:6',
-            'avatar' => 'sometimes|max:255',
-        ]);
+            'avatar' => 'sometimes|image|max:2048',
+            ]);
+
+        if ($request->hasFile('avatar')) {
+            $folder = 'avatars/' . $validated['name'];
+            $avatarPath = $request->file('avatar')->store($folder, 's3');
+            $validated['avatar'] = Storage::disk('s3')->url($avatarPath);
+        }
 
         $user = User::create($validated);
         return response()->json([

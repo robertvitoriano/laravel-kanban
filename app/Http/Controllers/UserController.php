@@ -49,8 +49,7 @@ class UserController extends Controller
             $folder = 'avatars/' . $validated['name'];
             $avatarPath = $request->file('avatar')->store($folder, 's3');
             Storage::disk('s3')->setVisibility($avatarPath, 'public');
-            Storage::disk('s3')->url($avatarPath);
-            $validated['avatar'] = env('AWS_BUCKET').'.s3.amazonaws.com/'.$avatarPath;
+            $validated['avatar'] = Storage::disk('s3')->url($avatarPath);
         }
 
         $user = User::create($validated);

@@ -25,7 +25,12 @@ class UserController extends Controller
         return response()->json([
             'access_token' => $user->createToken('api_token')->plainTextToken,
             'token_type' => 'Bearer',
-            'level' =>  $user->level,
+            'user' =>  [
+                'name' => $user->name,
+                'level' => $user->level,
+                'email' => $user->email,
+                'avatar' => $user->avatar,
+            ],
         ]);
     }
 
@@ -34,14 +39,20 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|max:255|unique:users,email',
-            'password' => 'required|confirmed| min:6'
+            'password' => 'required|confirmed| min:6',
+            'avatar' => 'sometimes|max:255',
         ]);
 
         $user = User::create($validated);
         return response()->json([
-            'data' => $user,
             'access_token' => $user->createToken('api_token')->plainTextToken,
             'token_type' => 'Bearer',
+            'user' =>  [
+                'name' => $user->name,
+                'level' => $user->level,
+                'email' => $user->email,
+                'avatar' => $user->avatar,
+            ],
         ], 201);
     }
 

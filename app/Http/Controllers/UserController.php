@@ -81,6 +81,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' =>  'Successfully updated!',
+            'data' => $validated,
         ], 201);
     }
 

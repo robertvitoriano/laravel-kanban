@@ -26,7 +26,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function(){
-    Route::patch('users/update-profile', [UserController::class, 'updateProfile']);
     Route::apiResource('tasks', TaskController::class);
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('boards', BoardController::class);
@@ -34,5 +33,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('project-lists',ProjectListController::class);
     Route::post('/boards/create-membership', [BoardController::class, 'createBoardMembership']);
     Route::post('/projects/members',[MemberController::class, 'store']);
+    Route::post('users/update-profile', [UserController::class, 'updateProfile']);
 });
 

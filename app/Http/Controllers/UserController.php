@@ -67,7 +67,7 @@ class UserController extends Controller
 
     function updateProfile(Request $request){
         $validated = $request->validate([
-            'name' => 'sometimes|max:255|unique:users,name',
+            'name' => 'sometimes|max:255|unique:users,name,' . auth()->id(),
             'avatar' => 'sometimes|image|max:2048',
             ]);
         if ($request->hasFile('avatar')) {

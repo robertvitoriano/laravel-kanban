@@ -65,9 +65,11 @@ class UserController extends Controller
         ], 201);
     }
 
-    function updateProfile(UpdateProfileRequest $request){
-        $validated = $request->validated();
-
+    function updateProfile(Request $request){
+        $validated = $request->validate([
+            'name' => 'sometimes|max:255|unique:users,name',
+            'avatar' => 'sometimes|image|max:2048',
+            ]);
         if ($request->hasFile('avatar')) {
             $folder = 'avatars/' . $validated['name'];
             $avatarPath = $request->file('avatar')->store($folder, 's3');
@@ -76,7 +78,6 @@ class UserController extends Controller
         }
 
         Auth::user()->update($validated);
-        Auth::user()->save();
 
         return response()->json([
             'message' =>  'Successfully updated!',

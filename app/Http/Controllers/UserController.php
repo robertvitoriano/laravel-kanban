@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use App\Http\Requests\UpdateProfileRequest;
 class UserController extends Controller
 {
     public function login(Request $request)
@@ -62,6 +62,24 @@ class UserController extends Controller
                 'email' => $user->email,
                 'avatar' => $user->avatar,
             ],
+        ], 201);
+    }
+
+    function updateProfile(UpdateProfileRequest $request){
+        $validated = $request->validated();
+
+        if ($request->hasFile('avatar')) {
+            $folder = 'avatars/' . $validated['name'];
+            $avatarPath = $request->file('avatar')->store($folder, 's3');
+            Storage::disk('s3')->setVisibility($avatarPath, 'public');
+            $validated['avatar'] = Storage::disk('s3')->url($avatarPath);
+        }
+
+        Auth::user()->update($validated);
+        Auth::user()->save();
+
+        return response()->json([
+            'message' =>  'Successfully updated!',
         ], 201);
     }
 

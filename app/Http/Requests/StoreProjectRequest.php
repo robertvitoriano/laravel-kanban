@@ -12,7 +12,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->level === 'admin';
+        return true;
     }
 
     /**

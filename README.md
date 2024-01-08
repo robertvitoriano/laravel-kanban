@@ -1,17 +1,25 @@
-currently this crud allows user who are admin to create projects and
-create regular users and attach them to projects.
+Running database:
+after installing docker run:
+docker compose up
 
-future features are:
+Deployment process on AWS EC2 Linux server with apache:
 
-[] A user that is an admin can create and delete ProjectLists
-[] A project can be attached to one and only one ProjectList
-[] A ProjectList can have several projects attached to it
-[] A User that is an admin can create Boards
-[] ProjectLists can be attached to a board, and only one
-[] A Board can have several ProjectLists attached to it
-[] regular users can be a a member several Boards by an admin (many-to-many)
-[] A Board can have several users
-[] When a regular user logs in, it is possible to chose which board that user has membership will access
-[] When an Admin logs in, only the boards that he has created will be shown
-[] On the board list screen, admin user will be allowed to create a new board by a plus button
+first run the following commands:
+   - sudo apt-get update
+   - sudo apt-get upgrade
+   - sudo apt-get install php8.1-curl
+   - install composer by following the tutorial: https://getcomposer.org/download/
+   - run composer install at the application root folder
+   - sudo apt-get install apache2
+   - sudo apt-get install php libapache2-mod-php php-mysql
+   
+then configure apache as following:
 
+1 - move file "quasar-kanban-api.conf" to '/etc/apache2/sites-available'
+2 - run the command sudo a2ensite quasar-kanban-api.conf
+3 - sudo a2enmod rewrite (to enable mod_rewrite)
+2 - on '/etc/apache2/ports' add 'Listen 4444'
+4 - on the aws console go to your instance page and check the security groups,
+    click on edit inbound rules and add the port 4444 as custom tcp, allowing requests from anywhere/ipv4
+
+finally run 'sudo systemctl restart apache2' and the application should be available at http:/server-ip:4444

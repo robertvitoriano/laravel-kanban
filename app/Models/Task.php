@@ -23,21 +23,24 @@ class Task extends Model
         'is_done' => 'boolean'
     ];
 
-    public function creator():BelongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
 
-    public function project():BelongsTo
+    public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
-protected static function booted(): void
+    protected static function booted(): void
     {
-        static::addGlobalScope('member', function(Builder $builder){
-           $builder->where('creator_id', Auth::id())
-                ->orWhereIn('project_id', Auth::user()->memberships->pluck('id'));
-        });
+        if (Auth::user() && Auth::user()->level == 'user') {
+
+            static::addGlobalScope('member', function (Builder $builder) {
+                $builder->where('creator_id', Auth::id())
+                    ->orWhereIn('project_id', Auth::user()->memberships->pluck('id'));
+            });
+        }
     }
 }

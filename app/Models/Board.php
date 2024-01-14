@@ -18,12 +18,12 @@ class Board extends Model
         'description',
         'cover'
     ];
-    public function projectLists ():HasMany
+    public function projectLists(): HasMany
     {
         return $this->hasMany(ProjectList::class);
     }
 
-    public function creator():BelongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
@@ -35,9 +35,11 @@ class Board extends Model
 
     protected static function booted(): void
     {
-        static::addGlobalScope('boardMembers', function(Builder $builder){
-           $builder->whereRelation('boardMembers', 'user_id', Auth::id());
-        });
+        if (Auth::user() && Auth::user()->level == 'user') {
+            static::addGlobalScope('boardMembers', function (Builder $builder) {
+                $builder->whereRelation('boardMembers', 'user_id', Auth::id());
+            });
+        }
     }
 
 }

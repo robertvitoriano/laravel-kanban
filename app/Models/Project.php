@@ -35,16 +35,18 @@ class Project extends Model
         return $this->belongsToMany(User::class, Member::class);
     }
 
-    public function projectList() : BelongsTo
-
+    public function projectList(): BelongsTo
     {
         return $this->belongsTo(ProjectList::class, 'project_list_id');
     }
 
     protected static function booted(): void
     {
-        static::addGlobalScope('member', function(Builder $builder){
-           $builder->whereRelation('members', 'user_id', Auth::id());
-        });
+        if ( Auth::user() && Auth::user()->level == 'user') {
+
+            static::addGlobalScope('member', function (Builder $builder) {
+                $builder->whereRelation('members', 'user_id', Auth::id());
+            });
+        }
     }
 }

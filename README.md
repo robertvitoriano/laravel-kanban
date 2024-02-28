@@ -3,8 +3,7 @@ In order to build the image run:
 docker build -t kanban-backend-laravel .
 
 in order to run the container run: 
-docker run -d  --name kanban-backend-laravel -p  8000:8000  kanban-backend-laravel
-
+docker run  --network host -d  --name kanban-backend-laravel  kanban-backend-laravel
 
 Running database:
 after installing docker run:

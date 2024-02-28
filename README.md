@@ -12,7 +12,9 @@ first run the following commands:
    - run composer install at the application root folder
    - sudo apt-get install apache2
    - sudo apt-get install php libapache2-mod-php php-mysql
-   
+   - in order to avoid forbidden error run the following:
+      sudo chown -R www-data:www-data folder_of_apache_projects
+
 then configure apache as following:
 
 1 - move file "quasar-kanban-api.conf" to '/etc/apache2/sites-available'

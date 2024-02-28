@@ -1,3 +1,11 @@
+Locally:
+In order to build the image run:
+docker build -t kanban-backend-laravel .
+
+in order to run the container run: 
+docker run -d  --name kanban-backend-laravel -p  8000:8000  kanban-backend-laravel
+
+
 Running database:
 after installing docker run:
 docker compose up
@@ -25,3 +33,6 @@ then configure apache as following:
     click on edit inbound rules and add the port 4444 as custom tcp, allowing requests from anywhere/ipv4
 
 finally run 'sudo systemctl restart apache2' and the application should be available at http:/server-ip:4444
+
+
+

@@ -17,11 +17,14 @@ first run the following commands:
    - sudo apt-get install php8.1-curl
    - install composer by following the tutorial: https://getcomposer.org/download/
    - run composer install at the application root folder
+   - install these dependencies:
+     sudo apt-get install -y php8.3-simplexml php8.3-dom php8.3-xml php8.3-curl
+
    - sudo apt-get install apache2
    - sudo apt-get install php libapache2-mod-php php-mysql
    - in order to avoid forbidden error run the following:
       sudo chown -R www-data:www-data folder_of_apache_projects
-
+    
 then configure apache as following:
 
 1 - move file "quasar-kanban-api.conf" to '/etc/apache2/sites-available'

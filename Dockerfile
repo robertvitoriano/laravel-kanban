@@ -22,4 +22,6 @@ RUN composer require laravel/socialite && \
     composer install --no-scripts --no-autoloader && \
     composer dump-autoload --optimize
 
+RUN chmod -R 775 storage
+
 ENTRYPOINT ["docker-entrypoint.sh"]

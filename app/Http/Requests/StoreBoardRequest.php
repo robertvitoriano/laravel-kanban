@@ -25,7 +25,7 @@ class StoreBoardRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'description' => 'required|max:65000',
-            'cover' => 'required:max:255',
+            'cover' => 'sometimes|image|max:2048',
         ];
     }
 }

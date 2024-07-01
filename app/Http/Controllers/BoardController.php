@@ -11,12 +11,21 @@ use App\Models\Board;
 use App\Http\Requests\CreateBoardMembershipRequest;
 use App\Models\User;
 use App\Http\Requests\AddUsersToBoardRequest;
+use Illuminate\Support\Facades\Storage;
 
 class BoardController extends Controller
 {
     public function store(StoreBoardRequest $request)
     {
         $validated = $request->validated();
+        if ($request->hasFile('cover')) {
+            $folder = 'project_covers/' . $validated['title'];
+            $coverPath = $request->file('cover')->store($folder, 's3');
+            Storage::disk('s3')->setVisibility($coverPath, 'public');
+
+            $validated['cover'] = Storage::disk('s3')->url($coverPath);
+        }
+
         $board = Auth::user()->boards()->create($validated);
         $board->boardMembers()->attach([$board->creator_id]);
 

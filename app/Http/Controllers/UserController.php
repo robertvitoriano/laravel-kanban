@@ -6,7 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\UpdateProfileRequest;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+
 class UserController extends Controller
 {
     public function login(Request $request)
@@ -16,7 +18,7 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
-        if(!Auth::attempt($validated)){
+        if (!Auth::attempt($validated)) {
             return response()->json([
                 'message' => 'Login information invalid'
             ], 401);
@@ -41,9 +43,9 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255|unique:users,name',
             'email' => 'required|max:255|unique:users,email',
-            'password' => 'required|confirmed| min:6',
+            'password' => 'required|confirmed|min:6',
             'avatar' => 'sometimes|image|max:2048',
-            ]);
+        ]);
 
         if ($request->hasFile('avatar')) {
             $folder = 'avatars/' . $validated['name'];
@@ -53,6 +55,7 @@ class UserController extends Controller
         }
 
         $user = User::create($validated);
+
         return response()->json([
             'access_token' => $user->createToken('api_token')->plainTextToken,
             'token_type' => 'Bearer',
@@ -65,11 +68,13 @@ class UserController extends Controller
         ], 201);
     }
 
-    function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
         $validated = $request->validate([
             'name' => 'sometimes|max:255|unique:users,name,' . auth()->id(),
             'avatar' => 'sometimes|image|max:2048',
-            ]);
+        ]);
+
         if ($request->hasFile('avatar')) {
             $folder = 'avatars/' . $validated['name'];
             $avatarPath = $request->file('avatar')->store($folder, 's3');
@@ -85,4 +90,49 @@ class UserController extends Controller
         ], 201);
     }
 
+    public function handleGoogleLogin(Request $request)
+    {
+        $validated = $request->validate([
+            'token' => 'required|string',
+        ]);
+
+        try {
+            $googleUserInfoUrl = 'https://www.googleapis.com/oauth2/v3/userinfo';
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $validated['token'],
+            ])->get($googleUserInfoUrl);
+
+            if ($response->failed()) {
+                return response()->json(['error' => 'Invalid Google token'], 401);
+            }
+
+            $googleUser = $response->json();
+
+            $user = User::firstOrCreate(
+                ['email' => $googleUser['email']],
+                [
+                    'name' => $googleUser['name'],
+                    'google_id' => $googleUser['sub'],
+                    'avatar' => $googleUser['picture'],
+                    'password' => bcrypt(Str::random(16)),
+                ]
+            );
+
+            $token = $user->createToken('api_token')->plainTextToken;
+
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'user' => [
+                    'name' => $user->name,
+                    'level' => $user->level,
+                    'email' => $user->email,
+                    'avatar' => $user->avatar,
+                ],
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Login failed'], 500);
+        }
+    }
 }

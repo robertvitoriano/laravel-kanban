@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('login',[UserController::class, 'login']);
 Route::post('register',[UserController::class, 'register']);
+Route::post('/auth/google', [UserController::class, 'handleGoogleLogin']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -35,7 +37,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/boards/add-users-to-board', [BoardController::class, 'addUsersToBoard']);
     Route::post('/projects/members',[MemberController::class, 'store']);
     Route::post('/projects/members/enter',[MemberController::class, 'enter']);
-
     Route::post('users/update-profile', [UserController::class, 'updateProfile']);
 });
 

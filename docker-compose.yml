@@ -10,6 +10,12 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+        volumes:
+            - $LARAVEL_PROJECT_PATH:/var/www
+        env_file:
+            - ./.env
+        user: "${UID}:${GID}"
+
 
     mysqldb:
         image: mysql:5.7
@@ -36,6 +42,7 @@ services:
             - "3307:3306"
         volumes:
             - db_testing:/var/lib/mysqldata
+
 volumes:
     db:
     db_testing:

@@ -3,46 +3,14 @@ version: "3.8"
 services:
     kanban-backend:
         restart: always
-        depends_on:
-            - mysqldb
         ports:
             - 8000:8000
         build:
             context: .
             dockerfile: Dockerfile
         volumes:
-            - $LARAVEL_PROJECT_PATH:/var/www
+            # Use . for current directory if unsure, or ensure $LARAVEL_PROJECT_PATH is correct
+            - .:/var/www
         env_file:
             - ./.env
         user: "${UID}:${GID}"
-
-
-    mysqldb:
-        image: mysql:5.7
-        restart: always
-        env_file: ./.env
-        environment:
-            - MYSQL_ROOT_USER=$DB_USERNAME
-            - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
-            - MYSQL_DATABASE=$DB_DATABASE
-        ports:
-            - $DB_PORT:$DB_PORT
-        volumes:
-            - db:/var/lib/mysqldata
-
-    mysqldb_testing:
-        image: mysql:5.7
-        restart: always
-        environment:
-            - MYSQL_ROOT_PASSWORD=123
-            - MYSQL_DATABASE=testing
-            - MYSQL_USER=test
-            - MYSQL_PASSWORD=123
-        ports:
-            - "3307:3306"
-        volumes:
-            - db_testing:/var/lib/mysqldata
-
-volumes:
-    db:
-    db_testing:

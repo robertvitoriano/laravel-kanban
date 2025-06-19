@@ -18,8 +18,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     php -r "unlink('composer-setup.php');"
 
-RUN composer require laravel/socialite && \
-    composer install --no-scripts --no-autoloader && \
+RUN composer install --no-scripts --no-autoloader && \
     composer dump-autoload --optimize
 
 RUN chmod -R 775 storage

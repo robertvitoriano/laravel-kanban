@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kanban-backend-deployment
+  labels:
+    app: kanban-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kanban-backend
+  template:
+    metadata:
+      labels:
+        app: kanban-backend
+    spec:
+      containers:
+      - name: kanban-backend-redis
+        image: redis:8
+        ports:
+          - containerPort: 6379
+      - name: kanban-backend
+        image: robertvitoriano/kanban-backend:latest
+        ports:
+          - containerPort: 8000
+        env:
+          - name: APP_NAME
+            value: "Laravel"
+          - name: APP_ENV
+            value: "local"
+          - name: APP_KEY
+            valueFrom:
+              secretKeyRef:
+                name: kanban-backend-secret
+                key: APP_KEY
+          - name: APP_DEBUG
+            valueFrom:
+              secretKeyRef:
+                name: kanban-backend-secret
+                key: APP_DEBUG
+          - name: APP_URL
+            valueFrom:
+                secretKeyRef:
+                  name: kanban-backend-secret
+                  key: APP_URL
+
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: kanban-backend-secret
+                key: DB_HOST
+          - name: DB_PORT
+            valueFrom:
+              secretKeyRef:
+                name: kanban-backend-secret
+                key: DB_PORT
+          - name: DB_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: kanban-backend-secret
+                key: DB_DATABASE
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: kanban-backend-secret
+                key: DB_USERNAME
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kanban-backend-secret
+                key: DB_PASSWORD
+
+          - name: BROADCAST_DRIVER
+            value: "log"
+          - name: CACHE_DRIVER
+            value: "file"
+          - name: FILESYSTEM_DISK
+            value: "local"
+          - name: QUEUE_CONNECTION
+            value: "sync"
+          - name: SESSION_DRIVER
+            value: "file"
+          - name: SESSION_LIFETIME
+            value: "120"
+
+          - name: MEMCACHED_HOST
+            value: "127.0.0.1"
+
+          - name: REDIS_HOST
+            value: "127.0.0.1"
+          - name: REDIS_PASSWORD
+            value: "null"
+          - name: REDIS_PORT
+            value: "6379"
+
+          - name: MAIL_MAILER
+            value: "smtp"
+          - name: MAIL_HOST
+            value: "mailpit"
+          - name: MA
